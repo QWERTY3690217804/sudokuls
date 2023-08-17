@@ -26,9 +26,10 @@ const Sudoku = () => {
 
   const solvePuzzle = () => {
     const solvedPuzzle = solve([...puzzle]);
-    if (solvedPuzzle) {
-      setPuzzle(solvedPuzzle);
+    if (!solvedPuzzle) {
+      return;
     }
+    setPuzzle(solvedPuzzle);
   }
 
   const generatePuzzle = () => {
@@ -186,8 +187,8 @@ const Sudoku = () => {
       <button onClick={() => setDifficulty("medium")}>Medium</button>
       <button onClick={() => setDifficulty("hard")}>Hard</button>
       <button onClick={generatePuzzle}>Generate Puzzle</button>
-      <button onClick={solvePuzzle}>meow</button>
       <p>{difficulty}</p>
+      <button onClick={solvePuzzle}>Solve Puzzle</button>
     </table>
   </>
   );
