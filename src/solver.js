@@ -5,15 +5,33 @@ const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // returns array of objects containing rows and columns of empty tiles in puzzle
 const getBlanks = (puzzle) => {
-let blanks = [];
-for (let i = 0; i < PUZZLE_SIZE; i++) {
-    for (let j = 0; j < PUZZLE_SIZE; j++) {
-        if (puzzle[i][j] === '') {
-            blanks.push({ row: i, col: j });
+    let blanks = [];
+    for (let i = 0; i < PUZZLE_SIZE; i++) {
+        for (let j = 0; j < PUZZLE_SIZE; j++) {
+            if (puzzle[i][j] === '') {
+                blanks.push({ row: i, col: j });
+            }
         }
     }
-}
-return blanks;
+    return blanks;
+};
+
+// returns if puzzle is initially valid
+const isInitialValid = (puzzle) => {
+    for (let i = 0; i < PUZZLE_SIZE; i++) {
+        for (let j = 0; j < PUZZLE_SIZE; j++) {
+            if (puzzle[i][j] !== '') {
+                let num = puzzle[i][j];
+                puzzle[i][j] = '';
+                let valid = isValidPlacement(i, j, num, puzzle);
+                puzzle[i][j] = num;
+                if (!valid) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 };
 
 // returns whether number can be placed in row and column of puzzle
@@ -21,7 +39,7 @@ const isValidPlacement = (row, col, num, puzzle) => {
     // checks if number is already on same row or column
     for (let i = 0; i < PUZZLE_SIZE; i++) {
         if (puzzle[row][i] === num || puzzle[i][col] === num) {
-        return false;
+            return false;
         }
     }
 
@@ -30,9 +48,9 @@ const isValidPlacement = (row, col, num, puzzle) => {
     let squareCol = Math.floor(col / 3) * 3;
     for (let i = 0; i < SQUARE_SIZE; i++) {
         for (let j = 0; j < SQUARE_SIZE; j++) {
-        if (puzzle[squareRow + i][squareCol + j] === num) {
-            return false;
-        }
+            if (puzzle[squareRow + i][squareCol + j] === num) {
+                return false;
+            }
         }
     }
     return true;
@@ -49,11 +67,11 @@ const solveTile = (blankIndex, blankTiles, puzzle) => {
     // checks each number for valid placement
     for (let i = 0; i < PUZZLE_SIZE; i++) {
         if (isValidPlacement(row, col, digits[i], puzzle)) {
-        // sets tile to valid number, solves for next tile
-        puzzle[row][col] = digits[i];
-        if (solveTile(blankIndex + 1, blankTiles, puzzle)) {
-            return true;
-        }
+            // sets tile to valid number, solves for next tile
+            puzzle[row][col] = digits[i];
+            if (solveTile(blankIndex + 1, blankTiles, puzzle)) {
+                return true;
+            }
         }
     }
     // resets tile and backtracks if no valid numbers found
@@ -63,12 +81,12 @@ const solveTile = (blankIndex, blankTiles, puzzle) => {
 
 // solves and returns puzzle
 const solve = (puzzle) => {
-    const blankTiles = getBlanks(puzzle);
-    if (solveTile(0, blankTiles, puzzle)) {
-        return puzzle;
-    } else {
+    if (!isInitialValid(puzzle)) {
         return false;
     }
+    const blankTiles = getBlanks(puzzle);
+    solveTile(0, blankTiles, puzzle);
+    return puzzle;
 };
 
 export default solve;
