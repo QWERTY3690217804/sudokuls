@@ -48,9 +48,8 @@ const Sudoku = () => {
         {puzzle.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {row.map((cellValue, columnIndex) => (
-              <td>
+              <td key={columnIndex}>
                 <input 
-                  key={columnIndex} 
                   type="text" 
                   maxLength="1"
                   value={cellValue}
