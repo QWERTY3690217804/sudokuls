@@ -5,23 +5,24 @@ const Script = () => {
     const SQUARE_SIZE = 3;
 
     let puzzle = [
-    [2, 0, 5, 0, 0, 9, 0, 0, 4],
-    [0, 0, 0, 0, 0, 0, 3, 0, 7],
-    [7, 0, 0, 8, 5, 6, 0, 1, 0],
-    [4, 5, 0, 7, 0, 0, 0, 0, 0],
-    [0, 0, 9, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 2, 0, 8, 5],
-    [0, 2, 0, 4, 1, 8, 0, 0, 6],
-    [6, 0, 8, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 2, 0, 0, 7, 0, 8],
+    ['2', '', '5', '', '', '9', '', '', '4'],
+    ['', '', '', '', '', '', '3', '', '7'],
+    ['7', '', '', '8', '5', '6', '', '1', ''],
+    ['4', '5', '', '7', '', '', '', '', ''],
+    ['', '', '9', '', '', '', '1', '', ''],
+    ['', '', '', '', '', '2', '', '8', '5'],
+    ['', '2', '', '4', '1', '8', '', '', '6'],
+    ['6', '', '8', '', '', '', '', '', ''],
+    ['1', '', '', '2', '', '', '7', '', '8'],
     ];
+    const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     // returns array of objects containing rows and columns of empty tiles in puzzle
     const getBlanks = (puzzle) => {
     let blanks = [];
     for (let i = 0; i < PUZZLE_SIZE; i++) {
         for (let j = 0; j < PUZZLE_SIZE; j++) {
-        if (puzzle[i][j] === 0) {
+        if (puzzle[i][j] === '') {
             blanks.push({ row: i, col: j });
         }
         }
@@ -60,17 +61,17 @@ const Script = () => {
 
     const { row, col } = blankTiles[blankIndex];
     // checks each number for valid placement
-    for (let i = 1; i <= PUZZLE_SIZE; i++) {
-        if (isValidPlacement(row, col, i, puzzle)) {
+    for (let i = 0; i < PUZZLE_SIZE; i++) {
+        if (isValidPlacement(row, col, digits[i], puzzle)) {
         // sets tile to valid number, solves for next tile
-        puzzle[row][col] = i;
+        puzzle[row][col] = digits[i];
         if (solveTile(blankIndex + 1, blankTiles, puzzle)) {
             return true;
         }
         }
     }
     // resets tile and backtracks if no valid numbers found
-    puzzle[row][col] = 0;
+    puzzle[row][col] = '';
     return false;
     };
 
@@ -79,7 +80,6 @@ const Script = () => {
     const blankTiles = getBlanks(puzzle);
     solveTile(0, blankTiles, puzzle);
     return puzzle;
-
     };
 
     return (
