@@ -50,14 +50,14 @@ const Sudoku = () => {
     let maxClues = 0;
   
     if (difficulty === "hard") {
-      minClues = 37;
-      maxClues = 81;
+      minClues = 50;
+      maxClues = 53;
     } else if (difficulty === "medium") {
-      minClues = 27;
-      maxClues = 36;
+      minClues = 46;
+      maxClues = 49;
     } else if (difficulty === "easy") {
-      minClues = 19;
-      maxClues = 26;
+      minClues = 35;
+      maxClues = 45;
     }
     
     const filledIndexes = Array.from(
