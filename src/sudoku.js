@@ -3,16 +3,27 @@ import solve from './solver.js';
 import './sudoku.css';
 
 const Sudoku = () => {
+  // let emptyPuzzle = [
+  //   ['2', '', '5', '', '', '9', '', '', '4'],
+  //   ['', '', '', '', '', '', '3', '', '7'],
+  //   ['7', '', '', '8', '5', '6', '', '1', ''],
+  //   ['4', '5', '', '7', '', '', '', '', ''],
+  //   ['', '', '9', '', '', '', '1', '', ''],
+  //   ['', '', '', '', '', '2', '', '8', '5'],
+  //   ['', '2', '', '4', '1', '8', '', '', '6'],
+  //   ['6', '', '8', '', '', '', '', '', ''],
+  //   ['1', '', '', '2', '', '', '7', '', '8'],
+  // ];
   let emptyPuzzle = [
-    ['2', '', '5', '', '', '9', '', '', '4'],
-    ['', '', '', '', '', '', '3', '', '7'],
-    ['7', '', '', '8', '5', '6', '', '1', ''],
-    ['4', '5', '', '7', '', '', '', '', ''],
-    ['', '', '9', '', '', '', '1', '', ''],
-    ['', '', '', '', '', '2', '', '8', '5'],
-    ['', '2', '', '4', '1', '8', '', '', '6'],
-    ['6', '', '8', '', '', '', '', '', ''],
-    ['1', '', '', '2', '', '', '7', '', '8'],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '']
   ];
   const [puzzle, setPuzzle] = useState(emptyPuzzle);
 
@@ -25,7 +36,9 @@ const Sudoku = () => {
 
   const solvePuzzle = () => {
     const solvedPuzzle = solve([...puzzle]);
-    setPuzzle(solvedPuzzle);
+    if (solvedPuzzle) {
+      setPuzzle(solvedPuzzle);
+    }
   }
 
   const generatePuzzle = () => {
@@ -74,8 +87,9 @@ const Sudoku = () => {
                 <input 
                   key={columnIndex} 
                   type="text" 
-                  maxlength="1"
+                  maxLength="1"
                   value={cellValue}
+                  className="numinput"
                   onChange = {e => handleInputChange(e, rowIndex, columnIndex)} >
                 </input>
               </td>
@@ -84,9 +98,11 @@ const Sudoku = () => {
         ))}
       </tbody>
     </table>
-    <button onClick={generatePuzzle}>Generate Puzzle</button>
-    <button onClick={solvePuzzle}>meow</button>
-    </>
+    <table>
+      <button onClick={generatePuzzle}>Generate Puzzle</button>
+      <button onClick={solvePuzzle}>meow</button>
+    </table>
+  </>
   );
 };
 
