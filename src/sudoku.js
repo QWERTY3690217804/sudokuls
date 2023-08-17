@@ -81,8 +81,44 @@ const Sudoku = () => {
       newPuzzle[row][col] = solvedPuzzle[row][col];
     }
 
+
     const cellsToRemove = Math.floor(Math.random() * (maxClues - minClues + 1) + minClues); 
     let removedCount = 0;
+    const findEmptyCell = (puzzle) => {
+      for (let row = 0; row < puzzle.length; row++) {
+        for (let col = 0; col < puzzle[row].length; col++) {
+          if (puzzle[row][col] === '') {
+            return [row, col];
+          }
+        }
+      }
+      return null;
+    };
+    const isUniqueSolution = (puzzle) => {
+      const copy = puzzle.map(row => [...row]);
+      const solutions = [];
+    
+      const solveUnique = (puzzle) => {
+        const emptyCell = findEmptyCell(puzzle);
+        if (!emptyCell) {
+          solutions.push(JSON.stringify(puzzle));
+          return;
+        }
+    
+        const [row, col] = emptyCell;
+        for (let num = 1; num <= 9; num++) {
+          if (isValid(puzzle, row, col, num.toString())) {
+            puzzle[row][col] = num.toString();
+            solveUnique(puzzle);
+            puzzle[row][col] = '';
+          }
+        }
+      };
+    
+      solveUnique(copy);
+    
+      return solutions.length === 1;
+    };
   
     while (removedCount < cellsToRemove) {
       const row = Math.floor(Math.random() * PUZZLE_SIZE);
@@ -91,6 +127,7 @@ const Sudoku = () => {
       if (solvedPuzzle[row][col] !== '') {
         const backup = solvedPuzzle[row][col];
         solvedPuzzle[row][col] = '';
+        const isStillUnique = isUniqueSolution(solvedPuzzle);
         
         const copy = JSON.parse(JSON.stringify(solvedPuzzle));
         if (solve(copy)) {
