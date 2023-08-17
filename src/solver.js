@@ -1,17 +1,6 @@
 const PUZZLE_SIZE = 9;
 const SQUARE_SIZE = 3;
 
-let puzzle = [
-['2', '', '5', '', '', '9', '', '', '4'],
-['', '', '', '', '', '', '3', '', '7'],
-['7', '', '', '8', '5', '6', '', '1', ''],
-['4', '5', '', '7', '', '', '', '', ''],
-['', '', '9', '', '', '', '1', '', ''],
-['', '', '', '', '', '2', '', '8', '5'],
-['', '2', '', '4', '1', '8', '', '', '6'],
-['6', '', '8', '', '', '', '', '', ''],
-['1', '', '', '2', '', '', '7', '', '8'],
-];
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // returns array of objects containing rows and columns of empty tiles in puzzle
@@ -75,8 +64,11 @@ const solveTile = (blankIndex, blankTiles, puzzle) => {
 // solves and returns puzzle
 const solve = (puzzle) => {
     const blankTiles = getBlanks(puzzle);
-    solveTile(0, blankTiles, puzzle);
-    return puzzle;
+    if (solveTile(0, blankTiles, puzzle)) {
+        return puzzle;
+    } else {
+        return false;
+    }
 };
 
 export default solve;
