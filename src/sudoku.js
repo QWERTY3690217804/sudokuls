@@ -27,6 +27,41 @@ const Sudoku = () => {
     const solvedPuzzle = solve([...puzzle]);
     setPuzzle(solvedPuzzle);
   }
+
+  const generatePuzzle = () => {
+    const PUZZLE_SIZE = 9;
+    const SQUARE_SIZE = 3;
+    const newPuzzle = Array.from({ length: PUZZLE_SIZE }, () =>
+      Array.from({ length: PUZZLE_SIZE }, () => '')
+    );
+  
+    // Generate a complete puzzle (e.g., by solving an empty puzzle)
+    const solvedPuzzle = solve(newPuzzle);
+  
+    // Remove cells to create the initial puzzle
+    const cellsToRemove = Math.floor(Math.random() * (PUZZLE_SIZE * PUZZLE_SIZE - 17)) + 17; // Ensure a minimum of 17 clues for solvability
+    let removedCount = 0;
+  
+    while (removedCount < cellsToRemove) {
+      const row = Math.floor(Math.random() * PUZZLE_SIZE);
+      const col = Math.floor(Math.random() * PUZZLE_SIZE);
+  
+      if (solvedPuzzle[row][col] !== '') {
+        const backup = solvedPuzzle[row][col];
+        solvedPuzzle[row][col] = '';
+        
+        // Check if the puzzle still has a unique solution
+        const copy = JSON.parse(JSON.stringify(solvedPuzzle));
+        if (solve(copy)) {
+          removedCount++;
+        } else {
+          solvedPuzzle[row][col] = backup; // Restore the removed value
+        }
+      }
+    }
+  
+    setPuzzle(solvedPuzzle);
+  };
   
   return (
     <>
@@ -49,6 +84,7 @@ const Sudoku = () => {
         ))}
       </tbody>
     </table>
+    <button onClick={generatePuzzle}>Generate Puzzle</button>
     <button onClick={solvePuzzle}>meow</button>
     </>
   );
