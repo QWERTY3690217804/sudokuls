@@ -3,17 +3,7 @@ import solve from './solver.js';
 import './sudoku.css';
 
 const Sudoku = () => {
-  // let emptyPuzzle = [
-  //   ['2', '', '5', '', '', '9', '', '', '4'],
-  //   ['', '', '', '', '', '', '3', '', '7'],
-  //   ['7', '', '', '8', '5', '6', '', '1', ''],
-  //   ['4', '5', '', '7', '', '', '', '', ''],
-  //   ['', '', '9', '', '', '', '1', '', ''],
-  //   ['', '', '', '', '', '2', '', '8', '5'],
-  //   ['', '2', '', '4', '1', '8', '', '', '6'],
-  //   ['6', '', '8', '', '', '', '', '', ''],
-  //   ['1', '', '', '2', '', '', '7', '', '8'],
-  // ];
+  const [difficulty, setDifficulty] = useState("easy");
   let emptyPuzzle = [
     ['', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', ''],
@@ -43,7 +33,7 @@ const Sudoku = () => {
 
   const generatePuzzle = () => {
     const PUZZLE_SIZE = 9;
-    const SQUARE_SIZE = 3;
+
     const newPuzzle = Array.from({ length: PUZZLE_SIZE }, () =>
       Array.from({ length: PUZZLE_SIZE }, () => '')
     );
@@ -51,8 +41,21 @@ const Sudoku = () => {
     // Generate a complete puzzle (e.g., by solving an empty puzzle)
     const solvedPuzzle = solve(newPuzzle);
   
+    let minClues = 0;
+    let maxClues = 0;
+  
+    if (difficulty === "hard") {
+      minClues = 37;
+      maxClues = 81;
+    } else if (difficulty === "medium") {
+      minClues = 27;
+      maxClues = 36;
+    } else if (difficulty === "easy") {
+      minClues = 19;
+      maxClues = 26;
+    }
     // Remove cells to create the initial puzzle
-    const cellsToRemove = Math.floor(Math.random() * (PUZZLE_SIZE * PUZZLE_SIZE - 17)) + 17; // Ensure a minimum of 17 clues for solvability
+    const cellsToRemove = Math.floor(Math.random() * (maxClues - minClues + 1) + minClues); 
     let removedCount = 0;
   
     while (removedCount < cellsToRemove) {
@@ -99,8 +102,12 @@ const Sudoku = () => {
       </tbody>
     </table>
     <table>
+      <button onClick={() => setDifficulty("easy")}>Easy</button>
+      <button onClick={() => setDifficulty("medium")}>Medium</button>
+      <button onClick={() => setDifficulty("hard")}>Hard</button>
       <button onClick={generatePuzzle}>Generate Puzzle</button>
       <button onClick={solvePuzzle}>meow</button>
+      <p>{difficulty}</p>
     </table>
   </>
   );
