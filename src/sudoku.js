@@ -8,7 +8,9 @@ const Sudoku = ({ sudokuData }) => {
         {sudokuData.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {row.map((cellValue, columnIndex) => (
-              <td key={columnIndex}>{cellValue}</td>
+              <td>
+                <input key={columnIndex} type="" maxlength="1" value={cellValue}></input>
+              </td>
             ))}
           </tr>
         ))}
